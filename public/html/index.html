@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>FriendApp</title>
+	<link rel="stylesheet" href="css/index.css" />
+	<link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div id="main">
+		<div id="header">
+			<div id="links">
+				<button class = "menuButton" button id="btn-home" onclick="window.location.href = '/'">Home</button>
+				<button class = "menuButton" button id="btn-about" onclick="window.location.href = '/about'">About</button>
+				<button class = "menuButton" button id="btn-chat" onclick="window.location.href = '/chat'">Chat</button>
+			</div>
+			<div id="buttons">
+				<button class = "menuButton" button id="btn-login" onclick="window.location.href = '/login'">Login</button>
+				<button class = "menuButton" button id="btn-register" onclick="window.location.href = '/register'">Register</button>
+			</div>
+		</div>
+		<div id="top">
+			<h1>FriendApp</h1>
+			<br />
+			<h4>Make friends with strangers online™</h4>
+		</div>
+		<div id="bottom">
+			<h3>Studies say over 20% of people have no friends.<br />
+			We strive to alter this statistic by offering online friends to those in need.</h3>
+		</div>
+	</div>
+	<script src="/js/checkLogin.js"></script>
+</body>
+</html>

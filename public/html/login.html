@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register for FriendApp</title>
+  <link rel="stylesheet" href="/css/credentials.css" />
+  <link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div id="header">
+		<div id="links">
+			<button id="btn-home" onclick="window.location.href = '/'">Home</button>
+			<button id="btn-about" onclick="window.location.href = '/about'">About</button>
+		</div>
+		<div id="buttons">
+			<button id="btn-login" onclick="window.location.href = '/login'">Login</button>
+			<button id="btn-register" onclick="window.location.href = '/register'">Register</button>
+		</div>
+	</div>
+  <div id="flex">
+    <form method="POST" action="/api/login">
+      <h1><strong>Log in to FriendApp</strong></h1>
+      <p class="br">&nbsp;</p>
+      <label for="username">Enter your username:</label>
+      <input type="username" id="username" name="username" required minlength="1" maxlength="32" size="48" placeholder="Username"/>
+	    <p class="br">&nbsp;</p>
+      <label for="password">Enter your password:</label>
+      <input type="password" id="password" name="password" required minlength="1" maxlength="32" size="48" placeholder="Password"/>
+      <p class="br">&nbsp;</p>
+      <button type="submit" id="submit" name="submit">Submit</button>
+    </form>
+  </div>
+</body>
+</html>

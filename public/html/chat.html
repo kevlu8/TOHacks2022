@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>FriendApp</title>
+	<link rel="stylesheet" href="css/index.css" />
+	<link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+	<script>
+		function clear() {
+			var cookies = document.cookie.split("; ");
+			for (var c = 0; c < cookies.length; c++) {
+				var d = window.location.hostname.split(".");
+				while (d.length > 0) {
+					var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
+					var p = location.pathname.split('/');
+					document.cookie = cookieBase + '/';
+					while (p.length > 0) {
+						document.cookie = cookieBase + p.join('/');
+						p.pop();
+					};
+					d.shift();
+				}
+			}
+			window.location.replace("/");
+		}
+	</script>
+</head>
+<body>
+	<div id="main">
+		<div id="header">
+			<div id="links">
+				<button id="btn-home" onclick="window.location.href = '/'">Home</button>
+				<button id="btn-about" onclick="window.location.href = '/about'">About</button>
+				<button id="btn-chat" onclick="window.location.href = '/chat'">Chat</button>
+			</div>
+			<form method="POST" action="/api/logout">
+				<button type="submit" id="btn-logout" onclick="clear()">Logout</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
