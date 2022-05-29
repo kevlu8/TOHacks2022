@@ -49,10 +49,6 @@
 			<div id="chathistory">
 				Hooking you up with someone to talk to!
 				<img id="loading" src="/res/loading.gif" />
-				<div id="sent">
-					<!-- ? -->
-					<h3 id="sentmsgs"></h3>
-				</div> 
 			</div>
 			
 			<div id="messagebox">
@@ -94,7 +90,7 @@
 				sent.appendChild(document.createElement("br"))
 				alert(e.data);
 
-				let chathistory = document.getElementById("sentmsgs");
+				let chathistory = document.getElementById("chathistory");
 				chathistory.innerHTML = sent;
 			}
 		});
@@ -118,8 +114,8 @@
 			sent.appendChild(node)
 			sent.appendChild(document.createElement("br"))
 
-			let chathistory = document.getElementById("sentmsgs");
-			chathistory.innerText = sent;
+			let chathistory = document.getElementById("chathistory");
+			chathistory.innerHTML = sent;
 
 			let msg = document.getElementById("message").value;
 			if (msg != "") {
