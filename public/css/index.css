@@ -132,3 +132,8 @@ div {
 #sent > #chathistory {
   background-color: #DDDDDD;
 }
+
+#chathistory {
+  overflow: auto
+  
+}

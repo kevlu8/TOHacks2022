@@ -15,61 +15,93 @@ const client = new Client(DATABASE_URL);
 client.connect();
 
 // Websocket
-var sockets = [];
+var active = [];
 
 var queue = null;
 
 var wss = new ws.Server({ port: 8081 });
 
-wss.on("connection", (s) => {
-	s.on("message", async (data) => {
-		// when new client connected
-		if (data[0] == 0) {
-			sockets.push(s);
-			// Initial handshake
-			console.log("client connected");
-			s.token = data.subarray(1); // handshake
-			if (queue != null) { // test if somebody is in queue
-				s.peer = queue;
-				queue.peer = s;
-				s.send("\x00" + (await client.query(`SELECT username FROM tokens WHERE token='${queue.token}'`)).rows[0]['username']);
-				queue.send("\x00" + (await client.query(`SELECT username FROM tokens WHERE token='${s.token}'`)).rows[0]['username']);
-				queue = null;
-			} else {
-				queue = s;
-			}
-		// when client sends heartbeat response
-		} else if (data[0] == 1) {
-			s.isAlive = true;
-		// when client sends message
-		} else {
-			s.peer.send(data.toString());
-		}
-	});
-	s.on("close", () => {
-		if (s.peer)
-			s.peer.terminate();
-		sockets.forEach((x, i) => {
-			if (x == s) {
-				sockets.splice(i, 1);
-			}
-		});
-	});
-	s.heartbeat = setInterval(() => {
-		if (s.isAlive == false) {
-			if (s.peer)
-				s.peer.terminate();
-			sockets.forEach((x, i) => {
-				if (x == s) {
-					sockets.splice(i, 1);
-				}
-			});
-			clearInterval(s.heartbeat);
-			return s.terminate();
-		}
-		s.isAlive = false;
-		s.send("\x01");
-	}, 5000);
+// All three of us were high when we commented this part
+wss.on("connection", (s) => { // On a web socket connection, do the following with the passed object `s':
+	s.on("message", async (data) => { // When a message is received, do the following:
+		// Handshake + matchmaking message
+		if (data[0] == 0) { // Check if the first element of data[] is equal to 0
+			// Add the new client to the list of active clients
+			active.push(s); // Push the object `s' into the array `active'
+			// Print a log message indicating that a new client has connected
+			console.log("Client Connected"); // Log the message for debugging purposes
+			// Add the token of the user to the socket
+			s.token = data.toString().substring(1); // Set the token of the socket to the token of the user
+			// Nobody is in the queue
+			if (queue === null) { // Check if the queue is empty
+				// Put the newly connected client in the queue
+				queue = s; // Set the queue to the socket of the newly connected client
+			// There is someone in the queue
+			} else { // Other cases (i.e. if the queue is not empty)
+				// Match the new client and the one in the queue
+				s.peer = queue; // Setting the queue client to the peer of the current client
+				queue.peer = s; // Setting the current client to the peer of the queue client
+				// Tell both clients that they have been matched
+				// Inform them of the other's username which will be resolved by querying the database with the token
+				s.send("\x00" + (await client.query(`SELECT username FROM tokens WHERE token='${queue.token}'`)).rows[0]['username']); // Send the null character as well as the username of the queue client
+				queue.send("\x00" + (await client.query(`SELECT username FROM tokens WHERE token='${s.token}'`)).rows[0]['username']); // Send the null character as well as the username of the current client
+				// Clear the queue so the next user will be put in it
+				queue = null; // Sets the queue to null, so the next user can be put in it
+			} // End of the if-else statement
+		// Check for a ping response from the client
+		} else if (data[0] == 1) { // If the first element of the array `data' is equal to 1
+			// A recieved ping means the client is still connected
+			s.isAlive = true; // Keeps the client alive so that it does not exit out of the ping loop
+		// A message was recieved from the client
+		} else { // If all above conditions have not been met, do the following:
+			// Forwards the message to the peer
+			// Note: data is cast to string because otherwise it's an [object Blob]
+			s.peer.send(data.toString()) // Sends all of data to the other user since theres no state identifing character at the begining
+		} // End of the if-else statement
+	}); // End of the on message function
+	s.on("close", () => { // When the client closes the connection, do the following:
+		// If s is connected to another client, disassociate the two, inform the other of the closure and disconnect them
+		if (s.peer) { // Check if `s.peer' exists - i.e. if the client is connected to another client 
+			// Inform the peer of the disassociation
+			s.peer.peer = null; // Set the peer of the peer of s to null
+			// Politely tell the peer to leave
+			s.peer.send("\x02"); // zero two daaaaaaaaarling reference
+		} // End of the if statement
+		// Terminate the socket
+		s.terminate(); // Terminate the socket
+		// Delete the socket from active sockets
+		active.forEach((x, i) => { // For each element in the array `active'
+			if (x == s) // Check if the current element is equal to `s'
+				active.splice(i, 1); // Remove the element at index `i'
+		}); // End of the forEach loop
+		// Stop the heartbeat
+		clearInterval(s.heartbeat);
+	}); // End of the on close function
+	s.heartbeat = setInterval(() => { // Set an interval to check if the client is still connected
+		// Check to see if the client has been disconnected
+		if (s.isAlive === false) { // If the client is not alive, do the following:
+			// If s is connected to another client, disassociate the two, inform the other of the closure and disconnect them
+			if (s.peer) { // Check if `s.peer' exists - i.e. if the client is connected to another client 
+				// Inform the peer of the disassociation
+				s.peer.peer = null; // Set the peer of the peer of s to null
+				// Politely tell the peer to leave
+				s.peer.send("\x02"); // zero two daaaaaaaaarling reference
+			} // End of the if statement
+			// Delete the socket from active sockets
+			active.forEach((x, i) => { // For each element in the array `active'
+				if (x == s) // Check if the current element is equal to `s'
+				active.splice(i, 1); // Remove the element at index `i'
+			}); // End of the forEach loop
+			// Stop the heartbeat
+			clearInterval(s.heartbeat); // Stop the heartbeat
+			// Terminate the socket
+			return s.terminate(); // Terminate the socket and return to stop progression to the rest of the function
+		} // End of the if statement
+		// Set the socket back to dead
+		s.isAlive = false; // Set isAlive of socket to false
+		// Send a heartbeat ping
+		s.send("\x01"); // Send the SOH character to the client
+	}, 10000); // Repeat every 10 seconds
 });
 
 function generateToken() {

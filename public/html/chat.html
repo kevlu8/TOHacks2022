@@ -48,15 +48,16 @@
 			</div>
 			<div id="chathistory">
 				Hooking you up with someone to talk to!
-				<img src="/res/loading.gif" />
+				<img id="loading" src="/res/loading.gif" />
 				<div id="sent">
 					<!-- ? -->
+					
 				</div> 
 			</div>
 			
 			<div id="messagebox">
 				<input type="text" id="message" name="message" required minlength="1" maxlength="2048" size="48" placeholder="Message" autocomplete="off"/>
-				<input type="image" src="/res/send.png" width=32 height=32 style="position: relative; top: -1.5rem; left: 13rem;" autocomplete="off" onclick="sendMsg()"/>
+				<input type="image" id="send" src="/res/send.png" width=32 height=32 style="position: relative; top: -1.5rem; left: 13rem;" autocomplete="off" onclick="sendMsg()"/>
 			</div>
 		</div>
 	</div>
@@ -65,6 +66,7 @@
 		let searchPlaceHold = document.getElementById("chathistory");
 		let name = document.getElementById("peername");
 		let sent = document.getElementById("sent")
+		let loadingImg = document.getElementById("loading")
 		ws.addEventListener("open", (e) => {
 			console.log("connected");
 			ws.send("\x00" + document.cookie.substring(6));
@@ -73,25 +75,36 @@
 		ws.addEventListener("message", (e) => {
 			if (e.data[0] == "\x00") {
 				console.log("found partner");
-				searchPlaceHold.innerHTML = null;
+				searchPlaceHold.innerHTML = "";
+				loadingImg = null;
 				name.innerHTML = e.data.substring(1);
-				// connection is established with a peer
-				// e.data[1:] will be the username of the peer
-				//document.getElementById("username").innerHTML = e.data.substring(1);
-
 			} else if (e.data == "\x01") {
 				ws.send("\x01");
+			} else if (e.data[0] == "\x02") {
+				ws.close();
+				window.location.href = "/";
 			} else {
 				// a message is recieved from the peer
 				// e.data will be the contents of the message 
-				//const newMsg = document.createElement("h3");
-				//const node = document.createTextNode(document.getElementById("message").value);
-				//newMsg.appendChild(node)
+				const newMsg = document.createElement("h3");
+				const node = document.createTextNode(e.data);
+				newMsg.appendChild(node)
 
-				//sent.appendChild(node)
-				//sent.appendChild(document.createElement("br"))
+				sent.appendChild(node)
+				sent.appendChild(document.createElement("br"))
 				alert(e.data);
 			}
+		});
+
+		input = document.getElementById("message");
+		input.addEventListener("keypress", function(event) {
+		// If the user presses the "Enter" key on the keyboard
+		if (event.key === "Enter") {
+			// Cancel the default action, if needed
+			event.preventDefault();
+			// Trigger the button element with a click
+			document.getElementById("send").click();
+		}
 		});
 
 		function sendMsg() {
