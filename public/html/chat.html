@@ -89,7 +89,6 @@
 
 				sent.appendChild(node)
 				sent.appendChild(document.createElement("br"))
-				alert(e.data);
 
 				let chathistory = document.getElementById("chathistory");
 				chathistory.innerHTML += name.innerHTML + ": " + sent.innerHTML;
@@ -118,7 +117,7 @@
 
 			let chathistory = document.getElementById("chathistory");
 			chathistory.innerHTML += "Me: " + sent.innerHTML;
-			sent = "";
+			sent.innerHTML = "";
 
 			let msg = document.getElementById("message").value;
 			if (msg != "") {
