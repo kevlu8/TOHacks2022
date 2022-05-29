@@ -94,7 +94,7 @@ div {
   display: flex;
   flex-direction: column;
   justify-content: left;
-  align-items: flex-end;
+  align-items: flex-start;
   background-color: #DDDDDD;
   display: flex;
   border-radius: 2rem;
