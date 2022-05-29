@@ -108,7 +108,7 @@ div {
 #sent {
   display:flex;
   background-color: #FFFFFF;
-  width:100%;
+  right:100%;
   flex-direction: column;
   justify-content: center;
   height: 3rem;

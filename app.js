@@ -42,7 +42,7 @@ wss.on("connection", (s) => {
 			s.isAlive = true;
 		// when client sends message
 		} else {
-			s.peer.send(data);
+			s.peer.send(data.toString());
 		}
 	});
 	s.on("close", () => {
