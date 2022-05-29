@@ -105,6 +105,19 @@ div {
   height: 25rem;
 }
 
+#sent {
+  display:flex;
+  background-color: #FFFFFF;
+  width:100%;
+  flex-direction: column;
+  justify-content: center;
+  height: 3rem;
+}
+
+#recieved {
+  background-color: #4d8d50;
+}
+
 #messagebox {
   display: flex;
   flex-direction: column;
@@ -114,4 +127,8 @@ div {
   /* border-radius: 50px; */
   padding-top: 2rem;
   width:100%
+}
+
+#sent > #chathistory {
+  background-color: #DDDDDD;
 }

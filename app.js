@@ -22,23 +22,22 @@ var queue = null;
 var wss = new ws.Server({ port: 8081 });
 
 wss.on("connection", (s) => {
-	s.on("message", (data) => {
-		// Initial handshake
-		console.log("client connected");
-
+	s.on("message", async (data) => {
 		// when new client connected
 		if (data[0] == 0) {
+			// Initial handshake
+			console.log("client connected");
 			s.token = data.subarray(1); // handshake
 			if (queue) { // test if somebody is in queue
 				s.peer = queue;
 				queue.peer = s;
-				s.send("\x00" + client.query(`SELECT username FROM tokens WHERE token='${queue.token}'`));
-				queue.send("\x00" + client.query(`SELECT username FROM tokens WHERE token='${s.token}'`));
+				s.send("\x00" + (await client.query(`SELECT username FROM tokens WHERE token='${queue.token}'`)).rows[0]['username']);
+				queue.send("\x00" + (await client.query(`SELECT username FROM tokens WHERE token='${s.token}'`)).rows[0]['username']);
 				queue = null;
 			} else {
 				queue = s;
 			}
-		// when client sends ping
+		// when client sends heartbeat response
 		} else if (data[0] == 1) {
 			s.isAlive = true;
 		// when client sends message

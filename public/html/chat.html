@@ -44,19 +44,20 @@
 		</div>
 		<div id="chatbox">
 			<div id="usernamething">
-				<h3 id="peername"></h3>
+				<h3 id="peername">asdw</h3>
 			</div>
 			<div id="chathistory">
-				Hooking you up with someone to talk to! <!-- this should only show while no messages exist -->
-				<!-- show loading circle -->
-				<img src="/res/loading.gif" />
+				<!-- Hooking you up with someone to talk to!
+				<img src="/res/loading.gif" /> -->
+				<div id="chat">
+					<h3 id="sent">sajkdwas</h3>
+					<h3 id="sent">sadwas</h3>
+				</div> 
 			</div>
-			<div id="chat">
-				
-			</div> 
+			
 			<div id="messagebox">
-				<input type="text" id="message" name="message" required minlength="1" maxlength="32" size="48" placeholder="Message" autocomplete="off"/>
-				<input type="image" src="/res/send.png" width=32 height=32 style="position: relative; top: -1.5rem; left: 13rem;" autocomplete="off"/>
+				<input type="text" id="message" name="message" required minlength="1" maxlength="2048" size="48" placeholder="Message" autocomplete="off"/>
+				<input type="image" src="/res/send.png" width=32 height=32 style="position: relative; top: -1.5rem; left: 13rem;" autocomplete="off" onclick="sendMsg()"/>
 			</div>
 		</div>
 	</div>
@@ -70,8 +71,6 @@
 			console.log("trying to find partner");
 		});
 		ws.addEventListener("message", (e) => {
-			console.log(e.data[0] == "\x00");
-			console.log(e.data[0] == 0);
 			if (e.data[0] == "\x00") {
 				console.log("found partner");
 				searchPlaceHold.innerHTML = null;
@@ -91,6 +90,14 @@
 		});
 		// when you need to send a message
 		//ws.send("message");
+
+		function sendMsg() {
+			let msg = document.getElementById("message").value;
+			if (msg != "") {
+				ws.send(msg);
+				document.getElementById("message").value = "";
+			}
+		}
 	</script>
 </body>
 </html>
