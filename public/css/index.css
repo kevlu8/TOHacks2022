@@ -101,7 +101,7 @@ div {
   width: 80%;
   height: 25rem;
   overflow: hidden scroll;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   text-align: center;
 }
 
