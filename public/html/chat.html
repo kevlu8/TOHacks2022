@@ -47,10 +47,10 @@
 				<h3 id="peername"></h3> <!-- Moment -->
 			</div>
 			<div id="chathistory">
-				<!-- Hooking you up with someone to talk to!
-				<img src="/res/loading.gif" /> -->
+				Hooking you up with someone to talk to!
+				<img src="/res/loading.gif" />
 				<div id="sent">
-					<h3></h3> <!-- ? -->
+					<!-- ? -->
 				</div> 
 			</div>
 			
@@ -64,6 +64,7 @@
 		const ws = new WebSocket("wss://friendapp.tech/ws");
 		let searchPlaceHold = document.getElementById("chathistory");
 		let name = document.getElementById("peername");
+		let sent = document.getElementById("sent")
 		ws.addEventListener("open", (e) => {
 			console.log("connected");
 			ws.send("\x00" + document.cookie.substring(6));
@@ -83,16 +84,23 @@
 			} else {
 				// a message is recieved from the peer
 				// e.data will be the contents of the message 
-				
+				//const newMsg = document.createElement("h3");
+				//const node = document.createTextNode(document.getElementById("message").value);
+				//newMsg.appendChild(node)
+
+				//sent.appendChild(node)
+				//sent.appendChild(document.createElement("br"))
 				alert(e.data);
 			}
 		});
-		// when you need to send a message
-		//ws.send("message");
 
 		function sendMsg() {
 			const newMsg = document.createElement("h3");
 			const node = document.createTextNode(document.getElementById("message").value);
+			newMsg.appendChild(node)
+
+			sent.appendChild(node)
+			sent.appendChild(document.createElement("br"))
 			let msg = document.getElementById("message").value;
 			if (msg != "") {
 				ws.send(msg);
