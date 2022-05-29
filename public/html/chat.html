@@ -92,7 +92,7 @@
 				alert(e.data);
 
 				let chathistory = document.getElementById("chathistory");
-				chathistory.innerHTML = sent;
+				chathistory.innerHTML += name.innerHTML + ": " + sent.innerHTML;
 			}
 		});
 
@@ -116,7 +116,7 @@
 			sent.appendChild(document.createElement("br"));
 
 			let chathistory = document.getElementById("chathistory");
-			chathistory.innerHTML = sent;
+			chathistory.innerHTML += "Me: " + sent.innerHTML;
 
 			let msg = document.getElementById("message").value;
 			if (msg != "") {
