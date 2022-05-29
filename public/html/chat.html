@@ -74,7 +74,7 @@
 			if (e.data[0] == "\x00") {
 				console.log("found partner");
 				searchPlaceHold.innerHTML = null;
-				name.innerHTML = e.data[1];
+				name.innerHTML = e.data.substring(1);
 				// connection is established with a peer
 				// e.data[1:] will be the username of the peer
 				//document.getElementById("username").innerHTML = e.data.substring(1);
