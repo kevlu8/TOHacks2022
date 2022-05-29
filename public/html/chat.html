@@ -91,6 +91,8 @@
 		//ws.send("message");
 
 		function sendMsg() {
+			const newMsg = document.createElement("h3");
+			const node = document.createTextNode(document.getElementById("message").value);
 			let msg = document.getElementById("message").value;
 			if (msg != "") {
 				ws.send(msg);

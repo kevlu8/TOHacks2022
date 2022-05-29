@@ -25,10 +25,11 @@ wss.on("connection", (s) => {
 	s.on("message", async (data) => {
 		// when new client connected
 		if (data[0] == 0) {
+			sockets.push(s);
 			// Initial handshake
 			console.log("client connected");
 			s.token = data.subarray(1); // handshake
-			if (queue) { // test if somebody is in queue
+			if (queue != null) { // test if somebody is in queue
 				s.peer = queue;
 				queue.peer = s;
 				s.send("\x00" + (await client.query(`SELECT username FROM tokens WHERE token='${queue.token}'`)).rows[0]['username']);
@@ -47,18 +48,24 @@ wss.on("connection", (s) => {
 	});
 	s.on("close", () => {
 		if (s.peer) {
-			try {
-				s.peer.peer = null;
-				s.peer.terminate();
-			} catch {}
+			s.peer.peer = null;
+			s.peer.terminate();
+			sockets.forEach((x, i) => {
+				if (x == s) {
+					sockets.splice(i, 1);
+				}
+			});
 		}
 	});
 	s.heartbeat = setInterval(() => {
 		if (s.isAlive == false) {
-			try {
-				s.peer.peer = null;
-				s.peer.terminate();
-			} catch {}
+			s.peer.peer = null;
+			s.peer.terminate();
+			sockets.forEach((x, i) => {
+				if (x == s) {
+					sockets.splice(i, 1);
+				}
+			});
 			clearInterval(s.heartbeat);
 			return s.terminate();
 		}
