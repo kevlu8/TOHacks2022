@@ -47,14 +47,18 @@ wss.on("connection", (s) => {
 	});
 	s.on("close", () => {
 		if (s.peer) {
-			s.peer.peer = null;
-			s.peer.terminate();
+			try {
+				s.peer.peer = null;
+				s.peer.terminate();
+			} catch {}
 		}
 	});
 	s.heartbeat = setInterval(() => {
 		if (s.isAlive == false) {
-			s.peer.peer = null; 
-			s.peer.terminate();
+			try {
+				s.peer.peer = null;
+				s.peer.terminate();
+			} catch {}
 			clearInterval(s.heartbeat);
 			return s.terminate();
 		}
