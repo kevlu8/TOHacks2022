@@ -49,6 +49,7 @@ wss.on("connection", (s) => { // On a web socket connection, do the following wi
 					queue.terminate(); // Terminate the socket and return to stop progression to the rest of the function
 					// Add the new socket into the queue
 					queue = s; // Assign s to queue
+					return;
 				}
 				// Match the new client and the one in the queue
 				s.peer = queue; // Setting the queue client to the peer of the current client
@@ -82,7 +83,7 @@ wss.on("connection", (s) => { // On a web socket connection, do the following wi
 		// Terminate the socket
 		s.terminate(); // Terminate the socket
 		// Delete the socket from active sockets
-		active.forEach((x, i) => { // For each element in the array `active'
+		active.forEach((x, i) => { // For each element in the array `active':
 			if (x == s) // Check if the current element is equal to `s'
 				active.splice(i, 1); // Remove the element at index `i'
 		}); // End of the forEach loop
