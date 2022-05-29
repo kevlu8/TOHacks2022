@@ -25,7 +25,9 @@ var wss = new ws.Server({ port: 8081 });
 wss.on("connection", (s) => {
 	s.on("message", (data) => {
 		// Initial handshake
+		console.log("message recieved")
 		if (data[0] == "\x00") {
+			console.log("new client added to queue")
 			s.token = data.subarray(1); // handshake
 			if (queue) {
 				s.peer = queue;
@@ -50,7 +52,7 @@ wss.on("connection", (s) => {
 	});
 	s.heartbeat = setInterval(() => {
 		if (s.isAlive == false) {
-			s.peer.peer = null;
+			s.peer.peer = null; 
 			s.peer.terminate();
 			clearInterval(s.heartbeat);
 			return s.terminate();
