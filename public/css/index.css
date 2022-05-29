@@ -110,7 +110,8 @@ div {
   background-color: #FFFFFF;
   right:100%;
   flex-direction: column;
-  justify-content: center;
+  justify-content: left;
+  align-items: flex-end;
   height: 3rem;
 }
 
@@ -131,7 +132,8 @@ div {
 
 #chathistory {
   background-color: #DDDDDD;
-  overflow: scroll;
+  overflow: auto scroll;
   bottom: 0;
   overflow-wrap: break-word;
+  text-align: left;
 }
