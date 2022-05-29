@@ -94,7 +94,7 @@
 				sent.appendChild(document.createElement("br"))
 				alert(e.data);
 
-				let chathistory = document.getElementById("sent");
+				let chathistory = document.getElementById("send");
 				chathistory.innerHTML = sent;
 			}
 		});
@@ -118,8 +118,8 @@
 			sent.appendChild(node)
 			sent.appendChild(document.createElement("br"))
 
-			let chathistory = document.getElementById("sent");
-			chathistory.innerHTML = sent;
+			let chathistory = document.getElementById("send");
+			chathistory.innerText = sent;
 
 			let msg = document.getElementById("message").value;
 			if (msg != "") {
