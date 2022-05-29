@@ -76,6 +76,9 @@
 				loadingImg = null;
 				document.getElementById("message").disabled = false;
 				document.getElementById("send").disabled = false;
+				document.getElementById("chathistory").style.justifyContent = "left";
+				document.getElementById("chathistory").style.alignItems = "flex-start";
+				document.getElementById("chathistory").style.textAlign = "left";
 				name.innerHTML = e.data.substring(1);
 			} else if (e.data == "\x01") {
 				ws.send("\x01");

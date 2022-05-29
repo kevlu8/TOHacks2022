@@ -93,17 +93,16 @@ div {
 #chathistory {
   display: flex;
   flex-direction: column;
-  justify-content: left;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   background-color: #DDDDDD;
-  display: flex;
   border-radius: 2rem;
   padding: 3rem;
   width: 80%;
   height: 25rem;
   overflow: hidden scroll;
   overflow-wrap: break-word;
-  text-align: left;
+  text-align: center;
 }
 
 #sent {
