@@ -51,7 +51,7 @@
 				<img id="loading" src="/res/loading.gif" />
 				<div id="sent">
 					<!-- ? -->
-					
+					<h3 id="sentmsgs"></h3>
 				</div> 
 			</div>
 			
@@ -94,7 +94,7 @@
 				sent.appendChild(document.createElement("br"))
 				alert(e.data);
 
-				let chathistory = document.getElementById("send");
+				let chathistory = document.getElementById("sentmsgs");
 				chathistory.innerHTML = sent;
 			}
 		});
@@ -118,7 +118,7 @@
 			sent.appendChild(node)
 			sent.appendChild(document.createElement("br"))
 
-			let chathistory = document.getElementById("send");
+			let chathistory = document.getElementById("sentmsgs");
 			chathistory.innerText = sent;
 
 			let msg = document.getElementById("message").value;
