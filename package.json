@@ -1,0 +1,25 @@
+{
+  "name": "tohacks2022",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevlu8/TOHacks2022.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevlu8/TOHacks2022/issues"
+  },
+  "homepage": "https://github.com/kevlu8/TOHacks2022#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.1",
+    "pg": "^8.7.3",
+    "ws": "^8.7.0"
+  }
+}

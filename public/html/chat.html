@@ -58,6 +58,7 @@
 		var ws = new WebSocket("wss://friendapp.tech/ws");
 		ws.addEventListener("open", (e) => {
 			socket.send("\x00" + document.cookie.substring(6));
+			console.log("found partner")
 		});
 		ws.addEventListener("message", (e) => {
 			if (e.data[0] == "\x00") {
