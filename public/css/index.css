@@ -106,7 +106,7 @@ div {
 }
 
 #sent {
-  display:flex;
+  display: flex;
   background-color: #FFFFFF;
   right:100%;
   flex-direction: column;
@@ -129,11 +129,10 @@ div {
   width:100%
 }
 
-#sent > #chathistory {
+#chathistory {
   background-color: #DDDDDD;
 }
 
-#chathistory {
-  overflow: auto
-  
+#sent {
+  overflow: auto 
 }

@@ -93,6 +93,10 @@
 				sent.appendChild(node)
 				sent.appendChild(document.createElement("br"))
 				alert(e.data);
+
+				let chathistory = document.getElementById("sent");
+				chathistory.scrollTop = chathistory.scrollHeight;
+				chathistory.innerHTML = sent;
 			}
 		});
 
@@ -114,6 +118,11 @@
 
 			sent.appendChild(node)
 			sent.appendChild(document.createElement("br"))
+
+			let chathistory = document.getElementById("sent");
+			chathistory.scrollTop = chathistory.scrollHeight;
+			chathistory.innerHTML = sent;
+
 			let msg = document.getElementById("message").value;
 			if (msg != "") {
 				ws.send(msg);
