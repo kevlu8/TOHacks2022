@@ -89,20 +89,21 @@ div {
   position: absolute;
   top: 150%;
 }
+
 #chathistory {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: flex-end;
   background-color: #DDDDDD;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   border-radius: 2rem;
   padding: 3rem;
   width: 80%;
   height: 25rem;
+  overflow: hidden scroll;
+  overflow-wrap: break-word;
+  text-align: left;
 }
 
 #sent {
@@ -130,10 +131,3 @@ div {
   width:100%
 }
 
-#chathistory {
-  background-color: #DDDDDD;
-  overflow: auto scroll;
-  bottom: 0;
-  overflow-wrap: break-word;
-  text-align: left;
-}
