@@ -27,7 +27,7 @@ wss.on("connection", (s) => { // On a web socket connection, do the following wi
 		// Handshake + matchmaking message
 		if (data[0] == 0) { // Check if the first element of data[] is equal to 0
 			// Add the new client to the list of active clients
-			active.push(s); // Push the object `s' into the array `active'
+			active.push(s); // Push the object `s` into the array `active`
 			// Print a log message indicating that a new client has connected
 			console.log("Client Connected"); // Log the message for debugging purposes
 			// Add the token of the user to the socket
@@ -38,6 +38,18 @@ wss.on("connection", (s) => { // On a web socket connection, do the following wi
 				queue = s; // Set the queue to the socket of the newly connected client
 			// There is someone in the queue
 			} else { // Other cases (i.e. if the queue is not empty)
+				// If the socket in the queue is an earlier instance of the same user disconnect them
+				if (queue.token == s.token) { // Check if the tokens of the client in the queue and the new client are the same
+					// Delete the socket from active sockets
+					active.forEach((x, i) => { // For each element in the array `active'
+						if (x == queue) // Check if the current element is equal to `s'
+						active.splice(i, 1); // Remove the element at index `i'
+					}); // End of the forEach loop
+					// Terminate the socket
+					queue.terminate(); // Terminate the socket and return to stop progression to the rest of the function
+					// Add the new socket into the queue
+					queue = s; // Assign s to queue
+				}
 				// Match the new client and the one in the queue
 				s.peer = queue; // Setting the queue client to the peer of the current client
 				queue.peer = s; // Setting the current client to the peer of the queue client
@@ -75,7 +87,7 @@ wss.on("connection", (s) => { // On a web socket connection, do the following wi
 				active.splice(i, 1); // Remove the element at index `i'
 		}); // End of the forEach loop
 		// Stop the heartbeat
-		clearInterval(s.heartbeat);
+		clearInterval(s.heartbeat); // Stop the heartbeat
 	}); // End of the on close function
 	s.heartbeat = setInterval(() => { // Set an interval to check if the client is still connected
 		// Check to see if the client has been disconnected
