@@ -12,20 +12,20 @@
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
 	<script>
 		function clear() {
-			var cookies = document.cookie.split("; ");
-			for (var c = 0; c < cookies.length; c++) {
-				var d = window.location.hostname.split(".");
-				while (d.length > 0) {
-					var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
-					var p = location.pathname.split('/');
-					document.cookie = cookieBase + '/';
-					while (p.length > 0) {
-						document.cookie = cookieBase + p.join('/');
-						p.pop();
-					};
-					d.shift();
-				}
-			}
+			// var cookies = document.cookie.split("; ");
+			// for (var c = 0; c < cookies.length; c++) {
+			// 	var d = window.location.hostname.split(".");
+			// 	while (d.length > 0) {
+			// 		var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
+			// 		var p = location.pathname.split('/');
+			// 		document.cookie = cookieBase + '/';
+			// 		while (p.length > 0) {
+			// 			document.cookie = cookieBase + p.join('/');
+			// 			p.pop();
+			// 		};
+			// 		d.shift();
+			// 	}
+			// }
 			window.location.replace("/");
 		}
 	</script>
@@ -38,10 +38,41 @@
 				<button id="btn-about" onclick="window.location.href = '/about'">About</button>
 				<button id="btn-chat" onclick="window.location.href = '/chat'">Chat</button>
 			</div>
-			<form method="POST" action="/api/logout">
-				<button type="submit" id="btn-logout" onclick="clear()">Logout</button>
-			</form>
+		<div id="buttons">
+			<button id="btn-logout" onclick="window.location.href = '/logout'">Logout</button>
+		</div>
+		</div>
+		<div id="chatbox">
+			<div id="chathistory">
+				Hooking you up with someone to talk to! <!-- this should only show while no messages exist -->
+				<!-- show loading circle -->
+				<img src="/res/loading.gif" />
+			</div>
+			<div id="messagebox">
+				<input type="text" id="message" name="message" required minlength="1" maxlength="32" size="48" placeholder="Message" autocomplete="off"/>
+				<input type="image" src="/res/send.png" width=32 height=32 style="position: relative; top: -1.5rem; left: 13rem;" autocomplete="off"/>
+			</div>
 		</div>
 	</div>
+	<script>
+		var ws = new WebSocket("wss://friendapp.tech/ws");
+		ws.addEventListener("open", (e) => {
+			socket.send("\x00" + document.cookie.substring(6));
+		});
+		ws.addEventListener("message", (e) => {
+			if (e.data[0] == "\x00") {
+				// connection is established with a peer
+				// e.data[1:] will be the username of the peer
+				
+			} else if (e.data == "\x01") {
+				ws.send("\x01");
+			} else {
+				// a message is recieved from the peer
+				// e.data will be the contents of the message 
+			}
+		});
+		// when you need to send a message
+		ws.send("message");
+	</script>
 </body>
 </html>

@@ -38,8 +38,10 @@
   </div>
   <script>
     let eph = document.getElementById("errorPlaceholder");
-    if (window.location.href.endsWith("?err")) {
+    if (window.location.href.endsWith("?err=0")) {
       eph.innerHTML = "Username already exists";
+    } else if (window.location.href.endsWith("?err=1")) {
+      eph.innerHTML = "You don't have an account, please register!"
     }
   </script>
 </body>
