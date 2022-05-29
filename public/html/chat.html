@@ -96,7 +96,7 @@
 				sent.appendChild(document.createElement("br"))
 
 				let chathistory = document.getElementById("chathistory");
-				chathistory.innerHTML += name.innerHTML + ": " + sent.innerHTML;
+				chathistory.innerHTML += name.innerHTML + ":&nbsp;" + sent.innerHTML;
 				sent.innerHTML = "";
 			}
 		});
@@ -121,7 +121,7 @@
 			sent.appendChild(document.createElement("br"));
 
 			let chathistory = document.getElementById("chathistory");
-			chathistory.innerHTML += "Me: " + sent.innerHTML;
+			chathistory.innerHTML += "Me:&nbsp;" + sent.innerHTML;
 			sent.innerHTML = "";
 
 			let msg = document.getElementById("message").value;
