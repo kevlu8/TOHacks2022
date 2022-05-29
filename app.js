@@ -24,16 +24,12 @@ var wss = new ws.Server({ port: 8081 });
 wss.on("connection", (s) => {
 	s.on("message", (data) => {
 		// Initial handshake
-		console.log("message recieved")
+		console.log("client connected");
 
-		console.log(s.peer); // @kevin what does it return when you run it?
-
-		//when new client connected
-		s.peer
-		if (data[0] == "\x00") {
-			console.log("new client added to queue")
+		// when new client connected
+		if (data[0] == 0) {
 			s.token = data.subarray(1); // handshake
-			if (queue) { //test if somebody is in queue
+			if (queue) { // test if somebody is in queue
 				s.peer = queue;
 				queue.peer = s;
 				s.send("\x00" + client.query(`SELECT username FROM tokens WHERE token='${queue.token}'`));
@@ -42,10 +38,10 @@ wss.on("connection", (s) => {
 			} else {
 				queue = s;
 			}
-		//when client sends ping
-		} else if (data[0] == "\x01") {
+		// when client sends ping
+		} else if (data[0] == 1) {
 			s.isAlive = true;
-		//when client sends message
+		// when client sends message
 		} else {
 			s.peer.send(data);
 		}
